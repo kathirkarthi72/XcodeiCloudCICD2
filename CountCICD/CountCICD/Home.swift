@@ -6,16 +6,22 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 class CounterVM: ObservableObject {
-    @Published var value: Int = 0
-    
+    @AppStorage("count") var count: Int = 0
+
     func increment() {
-        value += 1
+        withAnimation(.linear, {
+            count += 1
+        })
     }
     
     func decrement() {
-        value -= 1
+        withAnimation(.bouncy, {
+            count -= 1
+        })
     }
 }
 
@@ -26,13 +32,13 @@ struct Home: View {
     var body: some View {
         NavigationView(content: {
             VStack(alignment: .center, spacing: 20, content: {
-                Text("\(viewModel.value)")
+                Text("\(viewModel.count)")
                     .font(.system(size: 100))
                 
                 HStack(alignment: .center, spacing: 3, content: {
                     Button(action: viewModel.decrement, label: {
                         Spacer()
-                        Image(systemName: "minus")
+                        Label("1", systemImage: "minus")
                             .font(.title)
                             .bold()
                         Spacer()
@@ -45,7 +51,7 @@ struct Home: View {
                     
                     Button(action: viewModel.increment, label: {
                         Spacer()
-                        Image(systemName: "plus")
+                        Label("1", systemImage: "plus")
                             .font(.title)
                             .bold()
                         Spacer()
@@ -66,7 +72,7 @@ struct Home: View {
                 .cornerRadius(10.0)
                 .padding()
                 
-                    Text("Tap + Button to increment.\nTap - Button to decrement")
+                    Text("Simple counting application.")
                     .font(.caption)
                 .foregroundStyle(.secondary)
             })
